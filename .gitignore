@@ -1,0 +1,84 @@
+# ==============================================================================
+# Trading Sentinel — Comprehensive Public .gitignore
+# ==============================================================================
+
+# 1. Secrets, Environment Variables & Credentials
+.env
+.env.*
+!.env.example
+credentials.json
+*.pem
+*.key
+*.cert
+*.p12
+
+# 2. Local Runtime State & Sensitive Configuration
+# Exclude active configuration containing private tokens and live portfolio state
+config/portfolio_state.yaml
+config/sentinel_config.yaml
+# Always keep example templates in version control
+!config/portfolio_state.yaml.example
+!config/sentinel_config.yaml.example
+
+# 3. Python Bytecode, Caches & Builds
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# 4. Testing & Coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+
+# 5. Virtual Environments
+venv/
+venv*/
+env/
+env*/
+.venv/
+.venv*/
+ENV/
+env.bak/
+venv.bak/
+
+# 6. Runtime Logs, Traces & Databases
+*.log
+logs/
+*.sqlite
+*.sqlite3
+*.db
+
+# 7. Agentic Workflows & IDE Metadata
+.agents/
+.gemini/
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+desktop.ini

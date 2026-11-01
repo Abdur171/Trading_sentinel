@@ -1,0 +1,137 @@
+# ==============================================================================
+# Autonomous Trading Sentinel — Daemon Configuration Template
+# ==============================================================================
+
+timezone: "Europe/Stockholm"
+
+sessions:
+  stockholm:
+    open_time: "09:00"
+    close_time: "17:30"
+    timezone: "Europe/Stockholm"
+    poll_interval_seconds: 60
+  stockholm_derivatives:
+    open_time: "09:00"
+    close_time: "19:45"
+    timezone: "Europe/Stockholm"
+    curfew_window_start: "17:30"
+    curfew_poll_interval_seconds: 15
+  us_equity:
+    open_time: "15:30"
+    close_time: "22:00"
+    timezone: "Europe/Stockholm"
+    poll_interval_seconds: 30
+  idle:
+    poll_interval_seconds: 120
+
+polling:
+  risk_worker_interval_sec: 60
+  scanner_worker_interval_sec: 300
+  macro_worker_interval_sec: 180
+  curfew_audit_interval_sec: 15
+  dedup_cooldown_minutes: 15
+
+macro_barriers:
+  us_10y:
+    symbol: "^TNX"
+    name: "US 10-Year Treasury Yield"
+    neutral_low: 5.00
+    neutral_high: 5.25
+    stressed_barrier: 5.30
+    bearish_barrier: 5.45 # >= 5.45% triggers Crisis Regime & Full Defensive Shield
+    bullish_barrier: 5.00
+    unit: "%"
+  us_30y:
+    symbol: "^TYX"
+    name: "US 30-Year Treasury Yield"
+    neutral_low: 5.05
+    neutral_high: 5.25
+    stressed_barrier: 5.35
+    bearish_barrier: 5.45
+    bullish_barrier: 4.95
+    unit: "%"
+  us_2y:
+    symbol: "^IRX"
+    name: "US 2-Year Treasury Yield"
+    neutral_low: 4.60
+    neutral_high: 4.75
+    stressed_barrier: 4.80
+    bearish_barrier: 4.85
+    bullish_barrier: 4.50
+    unit: "%"
+  brent_crude:
+    symbol: "BZ=F"
+    name: "Brent Crude Oil Futures"
+    neutral_low: 92.0
+    neutral_high: 101.99
+    stressed_barrier: 102.0
+    bearish_barrier: 110.0 # >= $110.00/bbl Crisis Barrier
+    bullish_barrier: 92.0
+    unit: "USD/bbl"
+  gold_spot:
+    symbol: "GC=F"
+    name: "Gold Futures"
+    neutral_low: 4250.0
+    neutral_high: 4350.0
+    stressed_barrier: 4400.0
+    bearish_barrier: 4450.0
+    bullish_barrier: 4290.0
+    unit: "USD/oz"
+
+macro_embargo:
+  enabled: true
+  windows:
+    - name: "US Tier-1 Macro Releases (CPI, PPI, NFP, Retail Sales, GDP)"
+      start_time: "14:15"
+      end_time: "14:40"
+      days: ["mon", "tue", "wed", "thu", "fri"]
+    - name: "FOMC Rate Decisions & Press Conferences"
+      start_time: "19:45"
+      end_time: "20:30"
+      days: ["wed"]
+
+curfew:
+  target_holding: "MINI L AMD AVA 117"
+  warning_1_time: "19:30"
+  warning_2_time: "19:40"
+  mandatory_exit_time: "19:45"
+  timezone: "Europe/Stockholm"
+
+telegram:
+  enabled: true
+  bot_token: "" # Set via TELEGRAM_BOT_TOKEN environment variable or enter here
+  chat_id: ""   # Set via TELEGRAM_CHAT_ID environment variable or enter here
+  allowed_user_ids: [] # Optional list of numeric user IDs allowed to interact with the bot
+  polling_timeout: 30
+
+pushover:
+  enabled: false
+  user_key: ""
+  api_token: ""
+
+quiet_hours:
+  enabled: true
+  start_time: "23:00"
+  end_time: "06:45"
+  timezone: "Europe/Stockholm"
+
+briefings:
+  morning_time: "08:30"
+  evening_time: "22:15"
+  timezone: "Europe/Stockholm"
+
+watch_mode:
+  default_duration_minutes: 60
+  alert_threshold_pct: 0.015
+  poll_interval_seconds: 15
+
+cache:
+  quote_ttl_seconds: 15
+
+power_management:
+  prevent_sleep: true # Prevents process suspension during screen lock (AwayMode)
+  away_mode: true
+
+alert_suppression:
+  stationary_suppression_hours: 12.0 # 12-hour suppression window for stationary alerts
+  auto_reset_hours: 12.0 # Automatic reset window for interactive /snooze and /mute commands

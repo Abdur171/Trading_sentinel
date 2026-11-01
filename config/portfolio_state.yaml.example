@@ -1,0 +1,662 @@
+# ==============================================================================
+# Autonomous Trading Sentinel — Portfolio State Template
+# ==============================================================================
+# Baseline Mandate NAV: 688.30 Points (Invested: 305.90 pts | Cash: 382.40 pts)
+# Dynamic Gate 4 Single Trade Risk Ceiling: 3.44 pts (0.50% of Live NAV)
+# High-Risk Derivative Cap: 5.00 pts with -40% hard stop (max downside: 2.00 pts)
+
+mandate:
+  total_points: 688.30
+  benchmark_hwm: 696.50
+  initial_capital: 696.50
+  invested_points: 305.90
+  cash_points: 382.40
+  base_currency: SEK
+  risk_budget_pct: 0.0050
+  max_single_trade_risk_pts: 3.44
+
+cash_accounts:
+  avanza_af:
+    account_name: Avanza AF
+    points: 290.00
+    currency: SEK
+    purpose: Macro Capital Preservation & Unallocated Dry Powder
+    committed_points: 0.00
+    committed_target: null
+    free_points: 290.00
+    schablonskatt_exempt: true
+    restrictions: Unencumbered; ready to fund macro dislocations
+  avanza_isk:
+    account_name: Avanza ISK
+    points: 31.00
+    currency: SEK
+    purpose: Nordic Tactical Dry Powder
+    committed_points: 7.50
+    committed_target: INVE-B.ST @ 402.50 SEK
+    free_points: 23.50
+    schablonskatt_exempt: false
+    restrictions: 7.50 pts earmarked for INVE-B.ST limit buy @ 402.50 SEK
+  avanza_kf:
+    account_name: Avanza KF
+    points: 4.50
+    currency: SEK
+    purpose: Residual Multi-Year Compounder Cash
+    committed_points: 0.00
+    committed_target: null
+    free_points: 4.50
+    schablonskatt_exempt: false
+    restrictions: null
+  revolut_invest:
+    account_name: Revolut Invest
+    points: 56.90
+    currency: USD
+    purpose: Multi-Currency Dry Powder
+    committed_points: 0.00
+    committed_target: null
+    free_points: 56.90
+    schablonskatt_exempt: false
+    restrictions: Native USD cash; $1 flat fee, 0% FX conversion drag
+
+holdings:
+  # ----------------------------------------------------------------------------
+  # BUCKET 1: SHORT-TERM HIGH-RISK DERIVATIVES (Pot 3) — 5.00 pts
+  # ----------------------------------------------------------------------------
+  - symbol: MINI L AMD AVA 117
+    name: MINI L AMD AVA 117
+    points: 5.00
+    account: avanza_isk
+    classification: Tactical Derivative Warrant
+    currency: SEK
+    cost_basis: 8.50
+    current_price: 8.50
+    reference_price: 8.50
+    baseline_points: 5.00
+    reported_pnl_pct: 0.00
+    status: active
+    horizon_bucket: BUCKET_1_SHORT_TERM_HIGH_RISK
+    position_tier: TIER_2_SATELLITE
+    instrument_type: derivative_warrant
+    underlying: AMD
+    ticker_override: AMD
+    stop_loss:
+      price: 5.10
+      type: hard_stop
+      action: exit_position
+      percentage: 0.40
+      trailing_pct: null
+      max_risk_pts: 2.00
+    limit_sell: null
+    limit_sells: null
+    tactical_tranche: null
+    curfew:
+      enforced: true
+      cutoff_time: "19:45"
+      warning_1: "19:30"
+      warning_2: "19:40"
+      timezone: Europe/Stockholm
+      directive: Mandatory flat book intraday curfew at 19:45 CEST
+    time_sensitive: true
+    earnings_date: null
+    catalyst_date: null
+    exit_date: null
+    exit_reason: null
+    mini_future_spec:
+      underlying_symbol: AMD
+      financing_level: 141.20
+      stop_loss_barrier: 144.50
+      parity: 10.0
+      fx_pair: USDSEK=X
+      issuer_residual_floor_pct: 0.50
+      leverage: 6.5
+    recovery_tranches: null
+
+  # ----------------------------------------------------------------------------
+  # BUCKET 2: TACTICAL MEDIUM-TERM SWINGS (Pot 2) — 35.00 pts
+  # ----------------------------------------------------------------------------
+  - symbol: ORCL
+    name: Oracle Corporation
+    points: 15.00
+    account: revolut_invest
+    classification: Enterprise Cloud Infrastructure
+    currency: USD
+    cost_basis: 140.00
+    current_price: 140.00
+    reference_price: 140.00
+    baseline_points: 15.00
+    reported_pnl_pct: 0.00
+    status: active
+    horizon_bucket: BUCKET_2_MEDIUM_TERM_SWING
+    position_tier: TIER_1_CORE
+    instrument_type: equity
+    underlying: null
+    ticker_override: null
+    stop_loss:
+      price: 128.80
+      type: hard_stop
+      action: exit_position
+      percentage: 0.08
+      trailing_pct: null
+      max_risk_pts: 1.20
+    limit_sell:
+      target_price: 160.00
+      points_to_trim: 7.50
+      target_core_points: 7.50
+    limit_sells: null
+    tactical_tranche: null
+    curfew: null
+    time_sensitive: false
+    earnings_date: null
+    catalyst_date: null
+    exit_date: null
+    exit_reason: null
+    mini_future_spec: null
+    recovery_tranches: null
+
+  - symbol: SINCH.ST
+    name: Sinch AB
+    points: 15.00
+    account: avanza_isk
+    classification: Cloud Communications Platform
+    currency: SEK
+    cost_basis: 25.00
+    current_price: 25.00
+    reference_price: 25.00
+    baseline_points: 15.00
+    reported_pnl_pct: 0.00
+    status: active
+    horizon_bucket: BUCKET_2_MEDIUM_TERM_SWING
+    position_tier: TIER_1_CORE
+    instrument_type: equity
+    underlying: null
+    ticker_override: null
+    stop_loss:
+      price: 23.00
+      type: hard_stop
+      action: exit_position
+      percentage: 0.08
+      trailing_pct: null
+      max_risk_pts: 1.20
+    limit_sell: null
+    limit_sells: null
+    tactical_tranche: null
+    curfew: null
+    time_sensitive: false
+    earnings_date: null
+    catalyst_date: null
+    exit_date: null
+    exit_reason: null
+    mini_future_spec: null
+    recovery_tranches: null
+
+  - symbol: AMD
+    name: Advanced Micro Devices Inc
+    points: 5.00
+    account: revolut_invest
+    classification: Semiconductor & AI Compute
+    currency: USD
+    cost_basis: 155.00
+    current_price: 155.00
+    reference_price: 155.00
+    baseline_points: 5.00
+    reported_pnl_pct: 0.00
+    status: active
+    horizon_bucket: BUCKET_2_MEDIUM_TERM_SWING
+    position_tier: TIER_2_SATELLITE
+    instrument_type: equity
+    underlying: null
+    ticker_override: null
+    stop_loss:
+      price: 140.00
+      type: hard_stop
+      action: exit_position
+      percentage: 0.0968
+      trailing_pct: null
+      max_risk_pts: 0.48
+    limit_sell: null
+    limit_sells: null
+    tactical_tranche: null
+    curfew: null
+    time_sensitive: false
+    earnings_date: null
+    catalyst_date: null
+    exit_date: null
+    exit_reason: null
+    mini_future_spec: null
+    recovery_tranches: null
+
+  # ----------------------------------------------------------------------------
+  # BUCKET 3: LONG-TERM QUALITY COMPOUNDERS (Pot 1) — 224.90 pts
+  # ----------------------------------------------------------------------------
+  - symbol: INVE-B.ST
+    name: INVE B
+    points: 65.00
+    account: avanza_isk
+    classification: Nordic Industrial Holding
+    currency: SEK
+    cost_basis: 260.00
+    current_price: 260.00
+    reference_price: 260.00
+    baseline_points: 65.00
+    reported_pnl_pct: 0.00
+    status: active
+    horizon_bucket: BUCKET_3_LONG_TERM_COMPOUNDER
+    position_tier: TIER_1_CORE
+    instrument_type: equity
+    underlying: null
+    ticker_override: null
+    stop_loss:
+      price: 240.00
+      type: hard_stop
+      action: exit_position
+      percentage: 0.0769
+      trailing_pct: null
+      max_risk_pts: 3.44
+    limit_sell: null
+    limit_sells: null
+    tactical_tranche: null
+    curfew: null
+    time_sensitive: false
+    earnings_date: null
+    catalyst_date: null
+    exit_date: null
+    exit_reason: null
+    mini_future_spec: null
+    recovery_tranches: null
+
+  - symbol: ATCO-B.ST
+    name: Atlas Copco AB B
+    points: 40.00
+    account: avanza_isk
+    classification: Industrial Compressor & Vacuum Leader
+    currency: SEK
+    cost_basis: 180.00
+    current_price: 180.00
+    reference_price: 180.00
+    baseline_points: 40.00
+    reported_pnl_pct: 0.00
+    status: active
+    horizon_bucket: BUCKET_3_LONG_TERM_COMPOUNDER
+    position_tier: TIER_1_CORE
+    instrument_type: equity
+    underlying: null
+    ticker_override: null
+    stop_loss:
+      price: 165.00
+      type: hard_stop
+      action: exit_position
+      percentage: 0.0833
+      trailing_pct: null
+      max_risk_pts: 3.33
+    limit_sell: null
+    limit_sells: null
+    tactical_tranche: null
+    curfew: null
+    time_sensitive: false
+    earnings_date: null
+    catalyst_date: null
+    exit_date: null
+    exit_reason: null
+    mini_future_spec: null
+    recovery_tranches: null
+
+  - symbol: SAAB-B.ST
+    name: Saab AB B
+    points: 35.00
+    account: avanza_isk
+    classification: Defense & Aerospace Technology
+    currency: SEK
+    cost_basis: 240.00
+    current_price: 240.00
+    reference_price: 240.00
+    baseline_points: 35.00
+    reported_pnl_pct: 0.00
+    status: active
+    horizon_bucket: BUCKET_3_LONG_TERM_COMPOUNDER
+    position_tier: TIER_1_CORE
+    instrument_type: equity
+    underlying: null
+    ticker_override: null
+    stop_loss:
+      price: 220.00
+      type: hard_stop
+      action: exit_position
+      percentage: 0.0833
+      trailing_pct: null
+      max_risk_pts: 2.92
+    limit_sell: null
+    limit_sells: null
+    tactical_tranche: null
+    curfew: null
+    time_sensitive: false
+    earnings_date: null
+    catalyst_date: null
+    exit_date: null
+    exit_reason: null
+    mini_future_spec: null
+    recovery_tranches: null
+
+  - symbol: MCAP.ST
+    name: MedCap AB
+    points: 30.00
+    account: avanza_isk
+    classification: Nordic Specialty Healthcare Compounder
+    currency: SEK
+    cost_basis: 480.00
+    current_price: 480.00
+    reference_price: 480.00
+    baseline_points: 30.00
+    reported_pnl_pct: 0.00
+    status: active
+    horizon_bucket: BUCKET_3_LONG_TERM_COMPOUNDER
+    position_tier: TIER_1_CORE
+    instrument_type: equity
+    underlying: null
+    ticker_override: null
+    stop_loss:
+      price: 450.00
+      type: hard_stop
+      action: exit_position
+      percentage: 0.0625
+      trailing_pct: null
+      max_risk_pts: 1.88
+    limit_sell: null
+    limit_sells: null
+    tactical_tranche: null
+    curfew: null
+    time_sensitive: false
+    earnings_date: null
+    catalyst_date: null
+    exit_date: null
+    exit_reason: null
+    mini_future_spec: null
+    recovery_tranches: null
+
+  - symbol: CEG
+    name: Constellation Energy Corp
+    points: 20.30
+    account: revolut_invest
+    classification: Nuclear Clean Power Merchant
+    currency: USD
+    cost_basis: 260.00
+    current_price: 260.00
+    reference_price: 260.00
+    baseline_points: 20.30
+    reported_pnl_pct: 0.00
+    status: active
+    horizon_bucket: BUCKET_3_LONG_TERM_COMPOUNDER
+    position_tier: TIER_1_CORE
+    instrument_type: equity
+    underlying: null
+    ticker_override: null
+    stop_loss:
+      price: 235.00
+      type: hard_stop
+      action: exit_position
+      percentage: 0.0962
+      trailing_pct: null
+      max_risk_pts: 2.86
+    limit_sell: null
+    limit_sells: null
+    tactical_tranche: null
+    curfew: null
+    time_sensitive: false
+    earnings_date: null
+    catalyst_date: null
+    exit_date: null
+    exit_reason: null
+    mini_future_spec: null
+    recovery_tranches: null
+
+  - symbol: VRT
+    name: Vertiv Holdings Co
+    points: 10.00
+    account: revolut_invest
+    classification: Data Center Digital Infrastructure
+    currency: USD
+    cost_basis: 110.00
+    current_price: 110.00
+    reference_price: 110.00
+    baseline_points: 10.00
+    reported_pnl_pct: 0.00
+    status: active
+    horizon_bucket: BUCKET_3_LONG_TERM_COMPOUNDER
+    position_tier: TIER_1_CORE
+    instrument_type: equity
+    underlying: null
+    ticker_override: null
+    stop_loss:
+      price: 99.00
+      type: hard_stop
+      action: exit_position
+      percentage: 0.10
+      trailing_pct: null
+      max_risk_pts: 1.00
+    limit_sell: null
+    limit_sells: null
+    tactical_tranche: null
+    curfew: null
+    time_sensitive: false
+    earnings_date: null
+    catalyst_date: null
+    exit_date: null
+    exit_reason: null
+    mini_future_spec: null
+    recovery_tranches: null
+
+  - symbol: NOW
+    name: ServiceNow Inc
+    points: 10.00
+    account: revolut_invest
+    classification: Enterprise Workflow Automation
+    currency: USD
+    cost_basis: 1000.00
+    current_price: 1000.00
+    reference_price: 1000.00
+    baseline_points: 10.00
+    reported_pnl_pct: 0.00
+    status: active
+    horizon_bucket: BUCKET_3_LONG_TERM_COMPOUNDER
+    position_tier: TIER_1_CORE
+    instrument_type: equity
+    underlying: null
+    ticker_override: null
+    stop_loss:
+      price: 900.00
+      type: hard_stop
+      action: exit_position
+      percentage: 0.10
+      trailing_pct: null
+      max_risk_pts: 1.00
+    limit_sell: null
+    limit_sells: null
+    tactical_tranche: null
+    curfew: null
+    time_sensitive: false
+    earnings_date: null
+    catalyst_date: null
+    exit_date: null
+    exit_reason: null
+    mini_future_spec: null
+    recovery_tranches: null
+
+  - symbol: CCJ
+    name: Cameco Corporation
+    points: 10.00
+    account: revolut_invest
+    classification: Nuclear Fuel Supply Leader
+    currency: USD
+    cost_basis: 50.00
+    current_price: 50.00
+    reference_price: 50.00
+    baseline_points: 10.00
+    reported_pnl_pct: 0.00
+    status: active
+    horizon_bucket: BUCKET_3_LONG_TERM_COMPOUNDER
+    position_tier: TIER_1_CORE
+    instrument_type: equity
+    underlying: null
+    ticker_override: null
+    stop_loss:
+      price: 45.00
+      type: hard_stop
+      action: exit_position
+      percentage: 0.10
+      trailing_pct: null
+      max_risk_pts: 1.00
+    limit_sell: null
+    limit_sells: null
+    tactical_tranche: null
+    curfew: null
+    time_sensitive: false
+    earnings_date: null
+    catalyst_date: null
+    exit_date: null
+    exit_reason: null
+    mini_future_spec: null
+    recovery_tranches: null
+
+  - symbol: VST
+    name: Vistra Corp
+    points: 4.60
+    account: avanza_kf
+    classification: Nuclear IPP Infrastructure
+    currency: USD
+    cost_basis: 140.00
+    current_price: 140.00
+    reference_price: 140.00
+    baseline_points: 4.60
+    reported_pnl_pct: 0.00
+    status: active
+    horizon_bucket: BUCKET_3_LONG_TERM_COMPOUNDER
+    position_tier: TIER_1_CORE
+    instrument_type: equity
+    underlying: null
+    ticker_override: null
+    stop_loss:
+      price: 126.00
+      type: hard_stop
+      action: exit_position
+      percentage: 0.10
+      trailing_pct: null
+      max_risk_pts: 0.46
+    limit_sell: null
+    limit_sells: null
+    tactical_tranche: null
+    curfew: null
+    time_sensitive: false
+    earnings_date: null
+    catalyst_date: null
+    exit_date: null
+    exit_reason: null
+    mini_future_spec: null
+    recovery_tranches: null
+
+  # ----------------------------------------------------------------------------
+  # BUCKET 4: LOW-RISK ANCHORS & MACRO HEDGES (Pot 1) — 41.00 pts
+  # ----------------------------------------------------------------------------
+  - symbol: RSG
+    name: Republic Services Inc
+    points: 22.30
+    account: revolut_invest
+    classification: Essential Waste Environmental Services
+    currency: USD
+    cost_basis: 195.00
+    current_price: 195.00
+    reference_price: 195.00
+    baseline_points: 22.30
+    reported_pnl_pct: 0.00
+    status: active
+    horizon_bucket: BUCKET_4_LOW_RISK_ANCHOR_AND_CASH
+    position_tier: TIER_1_CORE
+    instrument_type: equity
+    underlying: null
+    ticker_override: null
+    stop_loss:
+      price: 180.00
+      type: hard_stop
+      action: exit_position
+      percentage: 0.0769
+      trailing_pct: null
+      max_risk_pts: 1.71
+    limit_sell: null
+    limit_sells: null
+    tactical_tranche: null
+    curfew: null
+    time_sensitive: false
+    earnings_date: null
+    catalyst_date: null
+    exit_date: null
+    exit_reason: null
+    mini_future_spec: null
+    recovery_tranches: null
+
+  - symbol: GOLD
+    name: Physical Gold Bullion ETF
+    points: 18.70
+    account: revolut_invest
+    classification: Sovereign Currency Macro Hedge
+    currency: USD
+    cost_basis: 2500.00
+    current_price: 2500.00
+    reference_price: 2500.00
+    baseline_points: 18.70
+    reported_pnl_pct: 0.00
+    status: active
+    horizon_bucket: BUCKET_4_LOW_RISK_ANCHOR_AND_CASH
+    position_tier: TIER_1_CORE
+    instrument_type: macro_hedge
+    underlying: null
+    ticker_override: null
+    stop_loss:
+      price: 2250.00
+      type: hard_stop
+      action: exit_position
+      percentage: 0.10
+      trailing_pct: null
+      max_risk_pts: 1.87
+    limit_sell: null
+    limit_sells: null
+    tactical_tranche: null
+    curfew: null
+    time_sensitive: false
+    earnings_date: null
+    catalyst_date: null
+    exit_date: null
+    exit_reason: null
+    mini_future_spec: null
+    recovery_tranches: null
+
+resting_orders:
+  - symbol: INVE-B.ST
+    name: INVE B
+    account: avanza_isk
+    order_type: limit_buy
+    target_price: 402.50
+    points: 7.50
+    currency: SEK
+    status: resting
+
+watchlist:
+  - symbol: SAMPLE_WATCH_1
+    name: Sample Pre-Approved Quality Compounder
+    currency: USD
+    tranches:
+      - tranche: T1
+        points: 10.00
+        target_price: 140.00
+        min_mos_pct: 15.0
+    stop_loss: 126.00
+    notes: "Pre-approved 10-Gate Buy Candidate. Gate 5: Direct USD Custody."
+
+time_sensitive_events:
+  - symbol: CEG
+    event_type: earnings
+    event_date: "2026-11-09"
+    description: "Constellation Energy Q3 2026 Earnings"
+    directive: "T-48h Pre-Flight Protocol 4 check. Profit stop at $285.06."
+    days_warning_threshold: 5
+    status: active
+
+liquidated_assets: []
+blacklisted_assets: []
+partial_trims: []
